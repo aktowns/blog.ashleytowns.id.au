@@ -2,8 +2,8 @@
 layout: post
 title: "FSharp, Qyoto on OS X"
 description: ""
-category: 
-tags: []
+category: messingaround
+tags: [fsharp, qt, qyoto, code]
 ---
 __Warning__, before i go on. I'm quite new to F# and Qt so if theres any errors give me a yell below   
 
@@ -17,7 +17,7 @@ to install simply tap it and brew install
     brew tap aktowns/tappedbrews
     brew install aktowns/tappedbrews/mono3
 
-This will install [mono 3.0.0](http://tirania.org/blog/archive/2012/Oct-22.html) and [FSharp 3.0.11](https://github.com/fsharp/fsharp/tree/3.0.11) 64bit, next we need qt and qyoto
+This will install [mono 3.0.0](http://tirania.org/blog/archive/2012/Oct-22.html) and [FSharp 3.0.11](https://github.com/fsharp/fsharp/tree/3.0.11) 64bit, next we need Qt and Qyoto
 
 ### Getting Qt and compiling Qyoto
 If anyone knows how to imply --HEAD using `depends_on` in a recipe please tell me!
