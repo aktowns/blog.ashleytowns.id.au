@@ -1,0 +1,77 @@
+body { background-color: orange; text-align: center; }
+a { color: #4c4c4c; text-decoration: none; }
+.head {
+	-webkit-animation-name: headrotater;
+	-webkit-animation-duration: 0.1s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: ease;
+}
+@-webkit-keyframes headrotater {
+	0% {
+		-webkit-transform:rotate(-2deg);
+	}
+	50% {
+		-webkit-transform:rotate(2deg);
+	}
+	100% {
+		-webkit-transform:rotate(-2deg);
+	}
+}
+
+#eye {
+	float: left;
+	margin-left: 51px;
+	margin-top: 80px;
+}
+#eye > #l {
+	width: 10px;
+	background-color: black;
+	height: 40px;
+	-webkit-transform:rotate(40deg)
+}
+#eye > #r {
+	width: 10px;
+	background-color: black;
+	height: 40px;
+	-webkit-transform:rotate(-40deg);
+	margin-top: -40px;
+}
+#mouth {
+	background-color: black;
+	width: 35px;
+	height: 50px;
+	border-top-left-radius: 40px 60px;
+	border-top-right-radius: 40px 60px;
+	border-bottom-right-radius: 30px 30px;
+	border-bottom-left-radius: 30px 30px;
+	margin-left: 2.5px;
+}
+#face {
+	border-top-left-radius: 130px 130px;
+	border-top-right-radius: 130px 130px;
+	border-bottom-right-radius: 140px 160px;
+	border-bottom-left-radius: 140px 160px;
+	border: 10px solid black;
+	width: 180px;
+	height: 200px;
+}
+#chin {
+	background-color: orange;
+	top: 145px;
+	left: 65px;
+	position: relative;
+	border-bottom: 12px solid black;
+	width: 40px;
+	height: 60px;
+	border-bottom-right-radius: 120px 135px;
+	border-bottom-left-radius: 120px 135px;
+}
+
+li { list-style: none; }
+header { text-align: center; }
+header h1 a { display: none; }
+#contain {
+	text-align: center;
+	margin: 0 auto;
+	width: 200px;
+}

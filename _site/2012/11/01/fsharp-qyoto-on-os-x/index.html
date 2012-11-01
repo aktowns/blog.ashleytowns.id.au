@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>FSharp, Qyoto on OS X</title>
+	<link rel="stylesheet" href="/style.css" />
+	<link rel="stylesheet" href="/pygments.css" />
+</head>
+<body>
+<container>
+	<header><inner><h1><a href="/">&laquo;</a> FSharp, Qyoto on OS X</h1></inner></header>
+	<content><p><strong>Warning</strong>, before i go on. I&#8217;m quite new to F# and Qt so if theres any errors give me a yell below</p>
+
+<p>After playing around with <a href='http://www.mono-project.com/MonoMac'>MonoMac</a> decided it&#8217;d be nice to have a cross platform UI solution.</p>
+
+<h3 id='compiling_mono'>Compiling Mono</h3>
+
+<p>The mono package for OS X are 32bit, where as Qt from homebrew is 64bit so based on <a href='https://github.com/adamv/homebrew-alt'>adamv&#8217;s homebrew alt repo</a> i made a mono3 recipe at <a href='https://github.com/aktowns/tappedbrews'>aktowns/tappedbrews</a> to install simply tap it and brew install</p>
+
+<p>brew tap aktowns/tappedbrews brew install aktowns/tappedbrews/mono3</p>
+
+<p>This will install <a href='http://tirania.org/blog/archive/2012/Oct-22.html'>mono 3.0.0</a> and <a href='https://github.com/fsharp/fsharp/tree/3.0.11'>FSharp 3.0.11</a> 64bit, next we need qt and qyoto</p>
+
+<h3 id='getting_qt_and_compiling_qyoto'>Getting Qt and compiling Qyoto</h3>
+
+<p>If anyone knows how to imply &#8211;HEAD using <code>depends_on</code> in a recipe please tell me!</p>
+
+<pre><code>brew install qt
+brew install aktowns/tappedbrews/smokegen --HEAD
+brew install aktowns/tappedbrews/smokeqt --HEAD
+brew install aktowns/tappedbrews/qyoto --HEAD</code></pre>
+
+<h3 id='installing_monodevelop'>Installing monodevelop</h3>
+
+<p>Instead of compiling monodevelop, gtk# and numerous other dependencies its probably a lot easier to just grab the <a href='http://download.xamarin.com/monodevelop/Mac/MonoDevelop-3.0.4.7.dmg'>monodevelop binaries</a>, install them and install <a href='http://download.mono-project.com/archive/2.10.9/macos-10-x86/11/MonoFramework-MRE-2.10.9_11.macos10.xamarin.x86.dmg'>mono 2.10.9</a> (to run monodevelop in) and select your default runtime as our brew compiled mono.</p>
+
+<p><img alt='monodevelop' src='/images/monodevelop.png' /></p>
+
+<p>I noticed a bug with monodevelop (at least on 3.0.4.7) where if you have the binary 3.0.0 and your brew compiled 3.0.0 monodevelop wont let you set the default (it keeps defaulting to the binary 3.0.0) so for now 2.10.9 is fine.</p>
+
+<p>After monodevelop is installed, set the default .net runtime to the brew installed version. and create a new F# console project!</p>
+
+<h3 id='an_example_f_qyoto_window'>An example F# Qyoto window</h3>
+
+<p><img alt='hello world' src='/images/helloworld.png' /></p>
+<div class='highlight'><pre><code class='fsharp'><span class='lineno'> 1</span> <span class='k'>module</span> <span class='nc'>Program</span>
+<span class='lineno'> 2</span> 
+<span class='lineno'> 3</span> <span class='k'>open</span> <span class='nc'>System</span>
+<span class='lineno'> 4</span> <span class='k'>open</span> <span class='nc'>Qyoto</span>
+<span class='lineno'> 5</span> 
+<span class='lineno'> 6</span> <span class='k'>type</span> <span class='nc'>QyotoApp</span><span class='bp'>()</span> <span class='k'>as</span> <span class='n'>self</span> <span class='o'>=</span> <span class='k'>class</span>
+<span class='lineno'> 7</span>   <span class='k'>inherit</span> <span class='nn'>Qyoto</span><span class='p'>.</span><span class='nc'>QWidget</span><span class='bp'>()</span>
+<span class='lineno'> 8</span>   
+<span class='lineno'> 9</span>   <span class='k'>do</span>
+<span class='lineno'>10</span>     <span class='k'>let</span> <span class='nc'>WIDTH</span> <span class='o'>=</span> <span class='mi'>250</span>
+<span class='lineno'>11</span>     <span class='k'>let</span> <span class='nc'>HEIGHT</span> <span class='o'>=</span> <span class='mi'>150</span>
+<span class='lineno'>12</span>     <span class='k'>base</span><span class='o'>.</span><span class='nc'>WindowTitle</span> <span class='o'>&lt;-</span> <span class='s2'>&quot;Hello World!&quot;</span>
+<span class='lineno'>13</span>     <span class='k'>base</span><span class='o'>.</span><span class='nc'>ToolTip</span> <span class='o'>&lt;-</span> <span class='s2'>&quot;Goodbye World&quot;</span>
+<span class='lineno'>14</span>     
+<span class='lineno'>15</span>     <span class='n'>self</span><span class='o'>.</span><span class='nc'>InitUI</span><span class='bp'>()</span>
+<span class='lineno'>16</span>     
+<span class='lineno'>17</span>     <span class='k'>let</span> <span class='n'>qdw</span> <span class='o'>=</span> <span class='k'>new</span> <span class='nc'>QDesktopWidget</span><span class='bp'>()</span>
+<span class='lineno'>18</span>     
+<span class='lineno'>19</span>     <span class='k'>let</span> <span class='n'>x</span> <span class='o'>=</span> <span class='o'>(</span><span class='n'>qdw</span><span class='o'>.</span><span class='nc'>Width</span> <span class='o'>-</span> <span class='nc'>WIDTH</span><span class='o'>)</span> <span class='o'>/</span> <span class='mi'>2</span>
+<span class='lineno'>20</span>     <span class='k'>let</span> <span class='n'>y</span> <span class='o'>=</span> <span class='o'>(</span><span class='n'>qdw</span><span class='o'>.</span><span class='nc'>Height</span> <span class='o'>-</span> <span class='nc'>HEIGHT</span><span class='o'>)</span> <span class='o'>/</span> <span class='mi'>2</span>
+<span class='lineno'>21</span>     
+<span class='lineno'>22</span>     <span class='k'>base</span><span class='o'>.</span><span class='nc'>Resize</span><span class='o'>(</span><span class='nc'>WIDTH</span><span class='o'>,</span> <span class='nc'>HEIGHT</span><span class='o'>)</span>
+<span class='lineno'>23</span>     <span class='k'>base</span><span class='o'>.</span><span class='nc'>Move</span><span class='o'>(</span><span class='n'>x</span><span class='o'>,</span> <span class='n'>y</span><span class='o'>)</span>
+<span class='lineno'>24</span>     <span class='k'>base</span><span class='o'>.</span><span class='nc'>Show</span><span class='bp'>()</span>
+<span class='lineno'>25</span>   
+<span class='lineno'>26</span>   <span class='o'>[&lt;</span><span class='nc'>Q_SLOT</span><span class='o'>(</span><span class='s2'>&quot;quit()&quot;</span><span class='o'>)&gt;]</span>
+<span class='lineno'>27</span>   <span class='k'>member</span> <span class='n'>self</span><span class='o'>.</span><span class='n'>quit</span><span class='bp'>()</span> <span class='o'>:</span> <span class='kt'>unit</span> <span class='o'>=</span> <span class='nn'>Environment</span><span class='p'>.</span><span class='nc'>Exit</span><span class='o'>(-</span><span class='mi'>1</span><span class='o'>)</span>
+<span class='lineno'>28</span>     
+<span class='lineno'>29</span>   <span class='k'>member</span> <span class='n'>self</span><span class='o'>.</span><span class='nc'>InitUI</span><span class='bp'>()</span> <span class='o'>=</span>
+<span class='lineno'>30</span>     <span class='k'>let</span> <span class='n'>quit</span> <span class='o'>=</span> <span class='k'>new</span> <span class='nc'>QPushButton</span><span class='o'>(</span><span class='s2'>&quot;Quit&quot;</span><span class='o'>,</span> <span class='n'>self</span><span class='o'>)</span>    
+<span class='lineno'>31</span>     <span class='n'>self</span><span class='o'>.</span><span class='nc'>Connect</span><span class='o'>(</span><span class='n'>quit</span><span class='o'>,</span> <span class='nn'>QWidget</span><span class='p'>.</span><span class='nc'>SIGNAL</span><span class='o'>(</span><span class='s2'>&quot;clicked()&quot;</span><span class='o'>),</span> <span class='nn'>QWidget</span><span class='p'>.</span><span class='nc'>SLOT</span><span class='o'>(</span><span class='s2'>&quot;quit()&quot;</span><span class='o'>))</span> <span class='o'>|&gt;</span> <span class='n'>ignore</span>
+<span class='lineno'>32</span>    
+<span class='lineno'>33</span>     <span class='n'>quit</span><span class='o'>.</span><span class='nc'>SetGeometry</span><span class='o'>(</span><span class='mi'>50</span><span class='o'>,</span> <span class='mi'>40</span><span class='o'>,</span> <span class='mi'>80</span><span class='o'>,</span> <span class='mi'>30</span><span class='o'>)</span>
+<span class='lineno'>34</span> <span class='k'>end</span>
+<span class='lineno'>35</span>   
+<span class='lineno'>36</span> <span class='k'>let</span> <span class='n'>main</span><span class='o'>(</span><span class='n'>args</span><span class='o'>)</span> <span class='o'>:</span> <span class='kt'>unit</span> <span class='o'>=</span>
+<span class='lineno'>37</span>     <span class='k'>new</span> <span class='nc'>QApplication</span><span class='o'>(</span><span class='n'>args</span><span class='o'>)</span> <span class='o'>|&gt;</span> <span class='n'>ignore</span>
+<span class='lineno'>38</span>     <span class='k'>new</span> <span class='nc'>QyotoApp</span><span class='bp'>()</span> <span class='o'>|&gt;</span> <span class='n'>ignore</span>
+<span class='lineno'>39</span>     <span class='nn'>QApplication</span><span class='p'>.</span><span class='nc'>Exec</span><span class='bp'>()</span> <span class='o'>|&gt;</span> <span class='n'>ignore</span>
+<span class='lineno'>40</span> 
+<span class='lineno'>41</span> <span class='n'>main</span><span class='o'>(</span><span class='nn'>System</span><span class='p'>.</span><span class='nn'>Environment</span><span class='p'>.</span><span class='nc'>GetCommandLineArgs</span><span class='bp'>()</span><span class='o'>)</span>
+</code></pre>
+</div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'randomblogs'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </content>
+	<footer>
+		<inner>
+			Theme by Ashley Towns, inspired by <a href="#">jekyll-bootstrap</a> "<a href="http://themes.jekyllbootstrap.com/preview/the-minimum/">the minimum</a>"
+			<br />
+			t:<a href="http://www.twitter.com/ikeeex">@ikeex</a>
+g:<a href="http://www.github.com/aktowns">aktowns</a><br />
+e:<a href="mailto:ashleyis@me.com">ashleyis@me.com</a><br />
+
+		</inner>
+	</footer>
+</container>
+</body>
+</html>
