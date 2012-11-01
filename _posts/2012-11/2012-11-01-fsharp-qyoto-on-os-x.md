@@ -5,7 +5,8 @@ description: ""
 category:
 tags: [fsharp, qt, qyoto, code]
 --- 
-> After playing around with [MonoMac](http://www.mono-project.com/MonoMac) I realized most people I know are running windows, most of the time thats fine. But sometimes I'd like to show something off and [Qyoto](http://techbase.kde.org/Development/Languages/Qyoto) seems like it could be the perfect cross platform solution!
+After playing around with [MonoMac](http://www.mono-project.com/MonoMac) I realized most people I know are running windows, most of the time thats fine. But sometimes I'd like to show something off and [Qyoto](http://techbase.kde.org/Development/Languages/Qyoto) seems like it could be the perfect cross platform solution!   
+
 __Warning__, before I go on. I'm quite new to F# and Qt so if theres any errors give me a yell below  
 
 I got a bit stuck going through the whole process of setting everything up, so here's what I did for anyone else looking to play with it.
