@@ -2,7 +2,7 @@ body {
 	margin: 0;
 	font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, "MS PGothic", Osaka, Sans-Serif;
 	font-size: 1em;
-	line-height: 1.625em;
+	line-height: 1.425em;
 	color: #2D2D2D;
 }
 
@@ -106,4 +106,10 @@ pre {
 	white-space: pre-wrap;
 	word-wrap: break-word;
 	line-height: 1.000em;
+}
+
+blockquote {
+	background-color: #F9FFFF;
+	padding: 2px;
+	line-height: 1em;
 }
