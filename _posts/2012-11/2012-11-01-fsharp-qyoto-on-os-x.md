@@ -20,7 +20,8 @@ to install simply tap it and brew install
 This will install [mono 3.0.0](http://tirania.org/blog/archive/2012/Oct-22.html) and [FSharp 3.0.11](https://github.com/fsharp/fsharp/tree/3.0.11) 64bit, next we need Qt and Qyoto
 
 ### Getting Qt and compiling Qyoto
-If anyone knows how to imply --HEAD using `depends_on` in a recipe please tell me!
+If anyone knows how to imply --HEAD using `depends_on` in a recipe please tell me!   
+These homebrew recipes are mostly based off the instructions [here](http://vivekgani.com/blog/2012/09/17/setting-up-qyoto-on-osx-lion/) with a few minor changes.
 
     brew install qt
     brew install aktowns/tappedbrews/smokegen --HEAD
@@ -40,6 +41,7 @@ After monodevelop is installed, set the default .net runtime to the brew install
 and create a new F# console project!   
 
 ### An example F# Qyoto Application
+Adapted from [zetcode's c# qyoto introduction](http://zetcode.com/gui/csharpqyoto/introduction/)
 
 {% highlight fsharp linenos %}
 module Program
