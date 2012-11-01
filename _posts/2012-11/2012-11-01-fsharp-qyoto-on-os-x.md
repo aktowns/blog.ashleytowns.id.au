@@ -39,8 +39,7 @@ I noticed a bug with monodevelop (at least on 3.0.4.7) where if you have the bin
 After monodevelop is installed, set the default .net runtime to the brew installed version. 
 and create a new F# console project!   
 
-### An example F# Qyoto window
-![hello world](/images/helloworld.png)
+### An example F# Qyoto Application
 
 {% highlight fsharp linenos %}
 module Program
@@ -52,8 +51,8 @@ type QyotoApp() as self = class
   inherit Qyoto.QWidget()
   
   do
-    let WIDTH = 250
-    let HEIGHT = 150
+    let width = 250
+    let height = 150
     base.WindowTitle <- "Hello World!"
     base.ToolTip <- "Goodbye World"
     
@@ -61,10 +60,10 @@ type QyotoApp() as self = class
     
     let qdw = new QDesktopWidget()
     
-    let x = (qdw.Width - WIDTH) / 2
-    let y = (qdw.Height - HEIGHT) / 2
+    let x = (qdw.Width - width) / 2
+    let y = (qdw.Height - height) / 2
     
-    base.Resize(WIDTH, HEIGHT)
+    base.Resize(width, height)
     base.Move(x, y)
     base.Show()
   
@@ -85,3 +84,5 @@ let main(args) : unit =
 
 main(System.Environment.GetCommandLineArgs())
 {% endhighlight %}
+
+![hello world](/images/helloworld.png)

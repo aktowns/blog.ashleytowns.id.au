@@ -41,9 +41,7 @@ brew install aktowns/tappedbrews/qyoto --HEAD</code></pre>
 
 <p>After monodevelop is installed, set the default .net runtime to the brew installed version. and create a new F# console project!</p>
 
-<h3 id='an_example_f_qyoto_window'>An example F# Qyoto window</h3>
-
-<p><img alt='hello world' src='/images/helloworld.png' /></p>
+<h3 id='an_example_f_qyoto_application'>An example F# Qyoto Application</h3>
 <div class='highlight'><pre><code class='fsharp'><span class='lineno'> 1</span> <span class='k'>module</span> <span class='nc'>Program</span>
 <span class='lineno'> 2</span> 
 <span class='lineno'> 3</span> <span class='k'>open</span> <span class='nc'>System</span>
@@ -53,8 +51,8 @@ brew install aktowns/tappedbrews/qyoto --HEAD</code></pre>
 <span class='lineno'> 7</span>   <span class='k'>inherit</span> <span class='nn'>Qyoto</span><span class='p'>.</span><span class='nc'>QWidget</span><span class='bp'>()</span>
 <span class='lineno'> 8</span>   
 <span class='lineno'> 9</span>   <span class='k'>do</span>
-<span class='lineno'>10</span>     <span class='k'>let</span> <span class='nc'>WIDTH</span> <span class='o'>=</span> <span class='mi'>250</span>
-<span class='lineno'>11</span>     <span class='k'>let</span> <span class='nc'>HEIGHT</span> <span class='o'>=</span> <span class='mi'>150</span>
+<span class='lineno'>10</span>     <span class='k'>let</span> <span class='n'>width</span> <span class='o'>=</span> <span class='mi'>250</span>
+<span class='lineno'>11</span>     <span class='k'>let</span> <span class='n'>height</span> <span class='o'>=</span> <span class='mi'>150</span>
 <span class='lineno'>12</span>     <span class='k'>base</span><span class='o'>.</span><span class='nc'>WindowTitle</span> <span class='o'>&lt;-</span> <span class='s2'>&quot;Hello World!&quot;</span>
 <span class='lineno'>13</span>     <span class='k'>base</span><span class='o'>.</span><span class='nc'>ToolTip</span> <span class='o'>&lt;-</span> <span class='s2'>&quot;Goodbye World&quot;</span>
 <span class='lineno'>14</span>     
@@ -62,10 +60,10 @@ brew install aktowns/tappedbrews/qyoto --HEAD</code></pre>
 <span class='lineno'>16</span>     
 <span class='lineno'>17</span>     <span class='k'>let</span> <span class='n'>qdw</span> <span class='o'>=</span> <span class='k'>new</span> <span class='nc'>QDesktopWidget</span><span class='bp'>()</span>
 <span class='lineno'>18</span>     
-<span class='lineno'>19</span>     <span class='k'>let</span> <span class='n'>x</span> <span class='o'>=</span> <span class='o'>(</span><span class='n'>qdw</span><span class='o'>.</span><span class='nc'>Width</span> <span class='o'>-</span> <span class='nc'>WIDTH</span><span class='o'>)</span> <span class='o'>/</span> <span class='mi'>2</span>
-<span class='lineno'>20</span>     <span class='k'>let</span> <span class='n'>y</span> <span class='o'>=</span> <span class='o'>(</span><span class='n'>qdw</span><span class='o'>.</span><span class='nc'>Height</span> <span class='o'>-</span> <span class='nc'>HEIGHT</span><span class='o'>)</span> <span class='o'>/</span> <span class='mi'>2</span>
+<span class='lineno'>19</span>     <span class='k'>let</span> <span class='n'>x</span> <span class='o'>=</span> <span class='o'>(</span><span class='n'>qdw</span><span class='o'>.</span><span class='nc'>Width</span> <span class='o'>-</span> <span class='n'>width</span><span class='o'>)</span> <span class='o'>/</span> <span class='mi'>2</span>
+<span class='lineno'>20</span>     <span class='k'>let</span> <span class='n'>y</span> <span class='o'>=</span> <span class='o'>(</span><span class='n'>qdw</span><span class='o'>.</span><span class='nc'>Height</span> <span class='o'>-</span> <span class='n'>height</span><span class='o'>)</span> <span class='o'>/</span> <span class='mi'>2</span>
 <span class='lineno'>21</span>     
-<span class='lineno'>22</span>     <span class='k'>base</span><span class='o'>.</span><span class='nc'>Resize</span><span class='o'>(</span><span class='nc'>WIDTH</span><span class='o'>,</span> <span class='nc'>HEIGHT</span><span class='o'>)</span>
+<span class='lineno'>22</span>     <span class='k'>base</span><span class='o'>.</span><span class='nc'>Resize</span><span class='o'>(</span><span class='n'>width</span><span class='o'>,</span> <span class='n'>height</span><span class='o'>)</span>
 <span class='lineno'>23</span>     <span class='k'>base</span><span class='o'>.</span><span class='nc'>Move</span><span class='o'>(</span><span class='n'>x</span><span class='o'>,</span> <span class='n'>y</span><span class='o'>)</span>
 <span class='lineno'>24</span>     <span class='k'>base</span><span class='o'>.</span><span class='nc'>Show</span><span class='bp'>()</span>
 <span class='lineno'>25</span>   
@@ -87,6 +85,7 @@ brew install aktowns/tappedbrews/qyoto --HEAD</code></pre>
 <span class='lineno'>41</span> <span class='n'>main</span><span class='o'>(</span><span class='nn'>System</span><span class='p'>.</span><span class='nn'>Environment</span><span class='p'>.</span><span class='nc'>GetCommandLineArgs</span><span class='bp'>()</span><span class='o'>)</span>
 </code></pre>
 </div>
+<p><img alt='hello world' src='/images/helloworld.png' /></p>
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */

@@ -25,12 +25,6 @@ header h1 {
 	margin-top: 0;
 	font-family: 'Helvetica Neue', Helvetica, 'Frutiger Linotype', Univers, Calibri, 'Gill Sans', 'Gill Sans MT', 'Myriad Pro', Myriad, 'DejaVu Sans Condensed', 'Liberation Sans', 'Nimbus Sans L', Tahoma, Geneva, 'Helvetica Neue', Helvetica, Arial, 'MS PGothic', Osaka, sans-serif;
 }
-header h1 a {
-	background-color: transparent;
-}
-header h1 a:hover {
-	background-color: #FFD479;
-}
 header inner, footer inner {
 	margin-left: auto;
 	margin-right: auto;
