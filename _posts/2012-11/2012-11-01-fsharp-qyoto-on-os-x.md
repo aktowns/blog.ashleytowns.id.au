@@ -14,18 +14,18 @@ The mono package for OS X are 32bit, where as Qt from homebrew is 64bit
 so based on [adamv's homebrew alt repo](https://github.com/adamv/homebrew-alt) i made a mono3 recipe at [aktowns/tappedbrews](https://github.com/aktowns/tappedbrews) 
 to install simply tap it and brew install
 
-  brew tap aktowns/tappedbrews
-	brew install aktowns/tappedbrews/mono3
+    brew tap aktowns/tappedbrews
+    brew install aktowns/tappedbrews/mono3
 
 This will install [mono 3.0.0](http://tirania.org/blog/archive/2012/Oct-22.html) and [FSharp 3.0.11](https://github.com/fsharp/fsharp/tree/3.0.11) 64bit, next we need qt and qyoto
 
 ### Getting Qt and compiling Qyoto
 If anyone knows how to imply --HEAD using `depends_on` in a recipe please tell me!
 
-	brew install qt
-	brew install aktowns/tappedbrews/smokegen --HEAD
-	brew install aktowns/tappedbrews/smokeqt --HEAD
-	brew install aktowns/tappedbrews/qyoto --HEAD
+    brew install qt
+    brew install aktowns/tappedbrews/smokegen --HEAD
+    brew install aktowns/tappedbrews/smokeqt --HEAD
+    brew install aktowns/tappedbrews/qyoto --HEAD
 
 ### Installing monodevelop
 Instead of compiling monodevelop, gtk# and numerous other dependencies its probably a lot easier to just grab the [monodevelop binaries](http://download.xamarin.com/monodevelop/Mac/MonoDevelop-3.0.4.7.dmg), install them and install [mono 2.10.9](http://download.mono-project.com/archive/2.10.9/macos-10-x86/11/MonoFramework-MRE-2.10.9_11.macos10.xamarin.x86.dmg) (to run monodevelop in) and select your default runtime as our brew compiled mono.    
