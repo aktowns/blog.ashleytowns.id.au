@@ -24,7 +24,7 @@ header {
 header h1 a {
 	background-color: transparent;
 }
-header h1 a {
+header h1 a:hover {
 	background-color: #FFD479;
 }
 
