@@ -37,9 +37,7 @@ Instead of compiling monodevelop, gtk# and numerous other dependencies its proba
 I noticed a bug with monodevelop (at least on 3.0.4.7) where if you have the binary 3.0.0 and your brew compiled 3.0.0 monodevelop wont let you set the default (it keeps defaulting to the binary 3.0.0) so for now 2.10.9 is fine.
 
 
-
-After monodevelop is installed, set the default .net runtime to the brew installed version. 
-and create a new F# console project!   
+Now lets create a new F# console project!   
 
 ### An example F# Qyoto Application
 Adapted from [zetcode's c# qyoto introduction](http://zetcode.com/gui/csharpqyoto/introduction/)
