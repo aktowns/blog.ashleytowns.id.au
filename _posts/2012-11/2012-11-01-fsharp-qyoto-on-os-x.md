@@ -2,8 +2,8 @@
 layout: post
 title: "FSharp, Qyoto on OS X"
 description: ""
-category: messingaround
-tags: []
+category:
+tags: [fsharp, qt, qyoto, code]
 ---
 __Warning__, before i go on. I'm quite new to F# and Qt so if theres any errors give me a yell below   
 
