@@ -3,7 +3,7 @@ layout: post
 title: "FSharp, Qyoto on OS X"
 description: "Setting up mono 3.0, fsharp and qyoto on OS X"
 category: code
-tags: [fsharp, qt, qyoto, code]
+tags: [fsharp, qt, qyoto]
 --- 
 After playing around with [MonoMac](http://www.mono-project.com/MonoMac) I realized most people I know are running windows, most of the time thats fine. But sometimes I'd like to show something off and [Qyoto](http://techbase.kde.org/Development/Languages/Qyoto) seems like it could be the perfect cross platform solution!   
 
