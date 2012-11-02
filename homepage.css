@@ -67,11 +67,22 @@ a { color: #4c4c4c; text-decoration: none; }
 	border-bottom-left-radius: 120px 135px;
 }
 
-li { list-style: none; }
+li { list-style: none; padding-top: 10px; }
+ul {
+	width: 455px;
+	margin: 0 auto;
+	text-align: left;
+}
 header { text-align: center; }
 header h1 a { display: none; }
 #contain {
 	text-align: center;
 	margin: 0 auto;
 	width: 200px;
+}
+.tags {
+	font-size: 14px;
+}
+.description {
+	color: #4F8F00;
 }
