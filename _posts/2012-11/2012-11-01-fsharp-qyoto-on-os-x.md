@@ -49,42 +49,45 @@ module Program
 open System
 open Qyoto
 
+let SIGNAL = QWidget.SIGNAL
+let SLOT = QWidget.SLOT
+
 type QyotoApp() as self = class
-  inherit Qyoto.QWidget()
+  inherit QWidget()
   
   do
-    let width = 250
-    let height = 150
     base.WindowTitle <- "Hello World!"
     base.ToolTip <- "Goodbye World"
     
-    self.InitUI()
+    self.setupButton
+    self.resizeAndCenter 250 150
     
-    let qdw = new QDesktopWidget()
-    
-    let x = (qdw.Width - width) / 2
-    let y = (qdw.Height - height) / 2
-    
-    base.Resize(width, height)
-    base.Move(x, y)
     base.Show()
   
-  [<Q_SLOT("quit()")>]
-  member self.quit() : unit = Environment.Exit(-1)
+  member self.resizeAndCenter w h =
+    let qdw = new QDesktopWidget()
+    let x = (qdw.Width - w) / 2
+    let y = (qdw.Height - h) / 2
+    base.Resize(w, h)
+    base.Move(x, y)
     
-  member self.InitUI() =
+  member self.setupButton : unit =
     let quit = new QPushButton("Quit", self)    
-    self.Connect(quit, QWidget.SIGNAL("clicked()"), QWidget.SLOT("quit()")) |> ignore
-   
+    self.Connect(quit, SIGNAL("clicked()"), SLOT("quit()")) |> ignore
     quit.SetGeometry(50, 40, 80, 30)
-end
   
-let main(args) : unit =
-    new QApplication(args) |> ignore
-    new QyotoApp() |> ignore
+  // MARK: Slots
+  [<Q_SLOT("quit()")>]
+  member self.quit() : unit = Environment.Exit(0)
+end
+
+let main(args) : unit =    
+    let application = new QApplication(args)
+    let qyotoApp = new QyotoApp()
+    
     QApplication.Exec() |> ignore
 
-main(System.Environment.GetCommandLineArgs())
+main(Environment.GetCommandLineArgs())
 {% endhighlight %}
 
 ![hello world](/images/helloworld.png)
