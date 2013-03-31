@@ -62,7 +62,7 @@ and re-order the fsproj build order, so `Program.fs` sits last (or your file wit
 
 `git commit` your changes and push to heroku `git push heroku` 
 
-{%highlight bash linenos %}
+{%highlight text linenos %}
 Projects/viewfiles git:(master) ▶ git push heroku
 Counting objects: 5, done.
 Delta compression using up to 8 threads.
