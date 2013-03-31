@@ -115,28 +115,7 @@ Project "/tmp/build_1rpsx5dkzhkhv/viewfiles.sln" (default target(s)):
   Target Build:
     Project "/tmp/build_1rpsx5dkzhkhv/viewfiles/viewfiles.fsproj" (default target(s)):
       Target PrepareForBuild:
-        Configuration: Debug Platform: x86
-        Created directory "bin/Debug/"
-        Created directory "obj/x86/Debug/"
-      Target CopyFilesMarkedCopyLocal:
-        Copying file from '/tmp/build_1rpsx5dkzhkhv/packages/Nancy.0.16.1/lib/net40/Nancy.dll' to '/tmp/build_1rpsx5dkzhkhv/viewfiles/bin/Debug/Nancy.dll'
-        Copying file from '/tmp/build_1rpsx5dkzhkhv/packages/System.Web.Razor.Unofficial.2.0.2/lib/net40/System.Web.Razor.Unofficial.dll' to '/tmp/build_1rpsx5dkzhkhv/viewfiles/bin/Debug/System.Web.Razor.Unofficial.dll'
-        Copying file from '/tmp/build_1rpsx5dkzhkhv/packages/Nancy.Viewengines.Razor.0.16.3/lib/net40/Nancy.ViewEngines.Razor.dll' to '/tmp/build_1rpsx5dkzhkhv/viewfiles/bin/Debug/Nancy.ViewEngines.Razor.dll'
-        Copying file from '/tmp/build_1rpsx5dkzhkhv/packages/Nancy.Authentication.Forms.0.16.1/lib/net40/Nancy.Authentication.Forms.dll' to '/tmp/build_1rpsx5dkzhkhv/viewfiles/bin/Debug/Nancy.Authentication.Forms.dll'
-        Copying file from '/tmp/build_1rpsx5dkzhkhv/packages/Newtonsoft.Json.4.5.11/lib/net40/Newtonsoft.Json.dll' to '/tmp/build_1rpsx5dkzhkhv/viewfiles/bin/Debug/Newtonsoft.Json.dll'
-        Copying file from '/tmp/build_1rpsx5dkzhkhv/packages/Nancy.Serialization.JsonNet.0.16.1/lib/net40/Nancy.Serialization.JsonNet.dll' to '/tmp/build_1rpsx5dkzhkhv/viewfiles/bin/Debug/Nancy.Serialization.JsonNet.dll'
-        Copying file from '/tmp/build_1rpsx5dkzhkhv/packages/Nancy.Hosting.Self.0.16.1/lib/net40/Nancy.Hosting.Self.dll' to '/tmp/build_1rpsx5dkzhkhv/viewfiles/bin/Debug/Nancy.Hosting.Self.dll'
-      Target GenerateSatelliteAssemblies:
-      No input files were specified for target GenerateSatelliteAssemblies, skipping.
-      Target CoreCompile:
-        Tool /tmp/build_1rpsx5dkzhkhv/vendor//mono3/bin/fsharpc-heroku execution started with arguments: -o:obj/x86/Debug/viewfiles.exe -g --debug:full --noframework --define:DEBUG --optimize+ --platform:x86 -r:/tmp/build_1rpsx5dkzhkhv/vendor/mono3/lib/mono/4.5/mscorlib.dll -r:/tmp/build_1rpsx5dkzhkhv/vendor/mono3/lib/mono/4.5/FSharp.Core.dll -r:/tmp/build_1rpsx5dkzhkhv/vendor/mono3/lib/mono/4.5/System.dll -r:/tmp/build_1rpsx5dkzhkhv/vendor/mono3/lib/mono/4.5/System.Numerics.dll -r:../packages/Nancy.0.16.1/lib/net40/Nancy.dll -r:../packages/System.Web.Razor.Unofficial.2.0.2/lib/net40/System.Web.Razor.Unofficial.dll -r:../packages/Nancy.Viewengines.Razor.0.16.3/lib/net40/Nancy.ViewEngines.Razor.dll -r:../packages/Nancy.Authentication.Forms.0.16.1/lib/net40/Nancy.Authentication.Forms.dll -r:../packages/Newtonsoft.Json.4.5.11/lib/net40/Newtonsoft.Json.dll -r:../packages/Nancy.Serialization.JsonNet.0.16.1/lib/net40/Nancy.Serialization.JsonNet.dll -r:../packages/Nancy.Hosting.Self.0.16.1/lib/net40/Nancy.Hosting.Self.dll -r:/tmp/build_1rpsx5dkzhkhv/vendor/mono3/lib/mono/4.5/System.Data.Linq.dll -r:/tmp/build_1rpsx5dkzhkhv/vendor/mono3/lib/mono/4.5/System.Xml.Linq.dll -r:/tmp/build_1rpsx5dkzhkhv/vendor/mono3/lib/mono/4.5/System.Core.dll --target:exe --warn:2 --warnaserror:76 --fullpaths --flaterrors --highentropyva- AssemblyInfo.fs Viewfiles.fs Program.fs
-        F# Compiler for F# 3.0 (Open Source Edition)
-        Freely distributed under the Apache 2.0 Open Source License
-      Target _CopyAppConfigFile:
-        Copying file from '/tmp/build_1rpsx5dkzhkhv/viewfiles/app.config' to '/tmp/build_1rpsx5dkzhkhv/viewfiles/bin/Debug/viewfiles.exe.config'
-      Target DeployOutputFiles:
-        Copying file from '/tmp/build_1rpsx5dkzhkhv/viewfiles/obj/x86/Debug/viewfiles.exe.mdb' to '/tmp/build_1rpsx5dkzhkhv/viewfiles/bin/Debug/viewfiles.exe.mdb'
-        Copying file from '/tmp/build_1rpsx5dkzhkhv/viewfiles/obj/x86/Debug/viewfiles.exe' to '/tmp/build_1rpsx5dkzhkhv/viewfiles/bin/Debug/viewfiles.exe'
+    ... SNIP ...
     Done building project "/tmp/build_1rpsx5dkzhkhv/viewfiles/viewfiles.fsproj".
 Done building project "/tmp/build_1rpsx5dkzhkhv/viewfiles.sln".
 
