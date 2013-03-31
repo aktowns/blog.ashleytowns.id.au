@@ -46,6 +46,11 @@ let main args =
     0
 {% endhighlight %}
 
+#### The Procfile
+The procfile tells heroku how to launch your application, in the case of self-hosted nancy the following works fine with the buildpack above.
+
+    web: mono appdir/bin/Debug/app.exe
+
 ### Compiling and deploying
 I had to enable build with xbuild in [xamarin studio](http://xamarin.com/studio)
 
