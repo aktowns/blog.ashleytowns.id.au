@@ -54,11 +54,11 @@ The procfile tells heroku how to launch your application, in the case of self-ho
 ### Compiling and deploying
 I had to enable build with xbuild in [xamarin studio](http://xamarin.com/studio)
 
-![xamarin studio](/images/Screen%20Shot%202013-04-01%20at%2010.30.26%20AM.png) 
+![xamarin studio](/images/Screen%20Shot%202013-04-01%20at%2010.30.26%20AM2.png) 
 
 and re-order the fsproj build order, so `Program.fs` sits last (or your file with the entrypoint) 
 
-![re-order](/images/Screen%20Shot%202013-04-01%20at%2010.40.25%20AM.png)
+![re-order](/images/Screen%20Shot%202013-04-01%20at%2010.40.25%20AM2.png)
 
 `git commit` your changes and push to heroku `git push heroku` 
 
