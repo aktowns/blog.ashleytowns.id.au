@@ -19,7 +19,9 @@ To use the build pack, pass it in with `heroku create` on a project
 The buildpack looks for a solution file (.sln) in root directory, and if it detects any packages.config's it will run Nuget on them and attempt to install them to packages/ this syncs up with the way [monodevelop nuget addin](https://github.com/mrward/monodevelop-nuget-addin) stores files.
 
 ### Nancy
-[Nancy](http://nancyfx.org/) is a [Sinatra](http://www.sinatrarb.com/) inspired framework for building web applications. Getting nancy setup with f# was pretty straight forward, the only issue initially was finding the right host to bind to, until i discovered binding to localhost allows all hosts. Make sure to include Nancy and Nancy.Hosting.Self using monodevelop-nuget-addin.
+[Nancy](http://nancyfx.org/) is a [Sinatra](http://www.sinatrarb.com/) inspired framework for building web applications. Getting nancy setup with f# was pretty straight forward, the only issue initially was finding the right host to bind to, until i discovered binding to localhost allows connections intended for any host (from the HTTP Host: header). 
+
+Make sure to include Nancy and Nancy.Hosting.Self using monodevelop-nuget-addin.
 
 {%highlight fsharp linenos %}
 module viewfiles.Main
