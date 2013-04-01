@@ -9,8 +9,9 @@ tags: [fsharp, heroku, xbuild]
 Recently i decided to try and get [Nancy](http://nancyfx.org/) up and running on [Heroku](http://www.heroku.com/), heres a brief gist of things I did to get it up and working.
 
 ## The buildpack
-There are [a](https://github.com/bvanderveen/heroku-mono-buildpack) [few](https://github.com/brandur/heroku-buildpack-mono) [buildpacks](https://github.com/BenHall/heroku-buildpack-mono) for mono2.x around on the internet but I was aiming for mono3 this turned out to be the longest part.
-I ended up trying to use [vulcan](https://github.com/heroku/vulcan) to create a buildpack but kept hitting issues so ended up `heroku run bash`'ing and building mono3 and netcatting it over, its available [here](https://github.com/aktowns/mono3-buildpack). I ended up throwing [Nuget](http://nuget.org/) in there too.
+There are [a](https://github.com/bvanderveen/heroku-mono-buildpack) [few](https://github.com/brandur/heroku-buildpack-mono) [buildpacks](https://github.com/BenHall/heroku-buildpack-mono) for mono2.x around on the internet but I was aiming for mono 3 this turned out to be the longest part of the whole process.
+
+I tried to use [vulcan](https://github.com/heroku/vulcan) to create a buildpack but kept hitting issues so ended up `heroku run bash`'ing and building mono3 and netcatting it over, its available [here](https://github.com/aktowns/mono3-buildpack). I ended up throwing [Nuget](http://nuget.org/) in there too. Heroku have some pretty good documentation on the process [here](https://devcenter.heroku.com/articles/buildpack-api).
 
 To use the build pack, pass it in with `heroku create` on a project
 
