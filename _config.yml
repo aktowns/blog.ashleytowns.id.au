@@ -4,6 +4,7 @@ auto: true
 pygments: true
 title : blog.ashleytowns.id.au
 tagline: rant rant rant
+url: http://blog.ashleytowns.id.au
 author :
   name : Ashley Towns
   email : ashleyis@me.com
