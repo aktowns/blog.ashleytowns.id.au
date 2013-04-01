@@ -4,11 +4,5 @@ layout: default
 {{ content }}
 <g:plusone></g:plusone><a href="https://twitter.com/share" class="twitter-share-button" data-via="ikeeex" data-size="large">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-<iframe
-  src="http://www.facebook.com/plugins/like.php?layout=standard&amp;show_faces=true&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=80&amp;href={{ site.url }}{{ post.url }}"
-  scrolling="no"
-  frameborder="0"
-  style="border:none; overflow:hidden; width:450px; height:80px;"
-  allowTransparency="true">
-</iframe>
+<fb:like></fb:like>
 {% include disqus.html %}
