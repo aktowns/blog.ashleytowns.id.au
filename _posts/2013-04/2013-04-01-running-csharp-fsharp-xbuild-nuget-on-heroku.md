@@ -11,13 +11,13 @@ Recently i decided to try and get [Nancy](http://nancyfx.org/) up and running on
 ## The buildpack
 There are [a](https://github.com/bvanderveen/heroku-mono-buildpack) [few](https://github.com/brandur/heroku-buildpack-mono) [buildpacks](https://github.com/BenHall/heroku-buildpack-mono) for mono2.x around on the internet but I was aiming for Mono 3 this turned out to be the longest part of the whole process.
 
-I tried to use [vulcan](https://github.com/heroku/vulcan) to create a buildpack but kept hitting issues so ended up `heroku run bash`'ing and building Mono 3 and netcat'ing it over, its available [here](https://github.com/aktowns/mono3-buildpack). I ended up throwing [Nuget](http://nuget.org/) in there too. Heroku have some pretty good documentation on the process [here](https://devcenter.heroku.com/articles/buildpack-api). My compile script is pretty hacked together but seems to be holding up fine.
+I tried to use [vulcan](https://github.com/heroku/vulcan) to create a buildpack but kept hitting issues so ended up `heroku run bash`'ing, building Mono 3 and netcat'ing it over, its available [here](https://github.com/aktowns/mono3-buildpack). I ended up throwing [Nuget](http://nuget.org/) in there too. Heroku have some pretty good documentation on the process [here](https://devcenter.heroku.com/articles/buildpack-api). My compile script is pretty hacked together but seems to be holding up fine.
 
 To use the build pack, pass it in with `heroku create` on a project
 
     heroku create projname --buildpack https://github.com/aktowns/mono3-buildpack.git
 
-The buildpack looks for a solution file (.sln) in the root directory, and if it detects a packages.config's it will run Nuget and attempt to install the packages to packages/ this syncs up with the way [monodevelop nuget addin](https://github.com/mrward/monodevelop-nuget-addin) stores downloaded packages.
+The buildpack looks for a solution file (.sln) in the root directory, and if it detects a packages.config it will run Nuget and attempt to install the packages to packages/ this syncs up with the way [monodevelop nuget addin](https://github.com/mrward/monodevelop-nuget-addin) stores downloaded packages.
 
 
 **The .gitignore file**
