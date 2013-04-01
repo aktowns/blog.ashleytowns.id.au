@@ -6,7 +6,7 @@ category: code
 tags: [fsharp, xamarinstudio, heroku, csharp, xbuild]
 ---
 
-Recently i decided to try and get [Nancy](http://nancyfx.org/) up and running on [Heroku](http://www.heroku.com/), heres a brief gist of things i did to get it up and working.
+Recently i decided to try and get [Nancy](http://nancyfx.org/) up and running on [Heroku](http://www.heroku.com/), heres a brief gist of things I did to get it up and working.
 
 ### The buildpack
 There are [a](https://github.com/bvanderveen/heroku-mono-buildpack) [few](https://github.com/brandur/heroku-buildpack-mono) [buildpacks](https://github.com/BenHall/heroku-buildpack-mono) for mono2.x around on the internet but I was aiming for mono3 this turned out to be the longest part.
@@ -16,10 +16,19 @@ To use the build pack, pass it in with `heroku create` on a project
 
     heroku create projname --buildpack https://github.com/aktowns/mono3-buildpack.git
 
-The buildpack looks for a solution file (.sln) in root directory, and if it detects any packages.config's it will run Nuget on them and attempt to install them to packages/ this syncs up with the way [monodevelop nuget addin](https://github.com/mrward/monodevelop-nuget-addin) stores files.
+The buildpack looks for a solution file (.sln) in root directory, and if it detects any packages.config's it will run Nuget on them and attempt to install them to packages/ this syncs up with the way [monodevelop nuget addin](https://github.com/mrward/monodevelop-nuget-addin) stores downloaded packages.
+
+
+#### .gitignore
+When committing files to the repo, i used the following .gitignore to not push up compiled binaries or packages as the buildpack should manage all of that.
+
+    projdir/bin
+    projdir/obj
+    packages/*
+    *.userprefs
 
 ### Nancy
-[Nancy](http://nancyfx.org/) is a [Sinatra](http://www.sinatrarb.com/) inspired framework for building web applications. Getting nancy setup with f# was pretty straight forward, the only issue initially was finding the right host to bind to, until i discovered binding to localhost allows connections intended for any host (from the HTTP Host: header). 
+[Nancy](http://nancyfx.org/) is a [Sinatra](http://www.sinatrarb.com/) inspired framework for building web applications. Getting nancy setup with F# was pretty straight forward, the only issue initially was finding the right host to bind to, until i discovered binding to localhost allows connections intended for any host *(from the HTTP Host: header)*. 
 
 Make sure to include Nancy and Nancy.Hosting.Self using monodevelop-nuget-addin.
 
@@ -40,7 +49,7 @@ let main args =
     let env_port = Environment.GetEnvironmentVariable("PORT")
     let port = if env_port = null then "1234" else env_port
     
-    let nancy_host = new Nancy.Hosting.Self.NancyHost(new Uri("http://localhost:" + port));
+    let nancy_host = new Nancy.Hosting.Self.NancyHost(new Uri("http://localhost:" + port))
     nancy_host.Start()
     
     while true do Console.ReadLine() |> ignore
@@ -63,6 +72,8 @@ and re-order the fsproj build order, so `Program.fs` sits last (or your file wit
 ![re-order](/images/Screen%20Shot%202013-04-01%20at%2010.40.25%20AM2.png)
 
 `git commit` your changes and push to heroku `git push heroku` 
+
+This takes a while, as it needs to pull down the Mono environment from S3 (100mb), pull down Nuget and pull in Nugets dependencies im sure theres ways to speed this up with caching but have yet to try any of them out. 
 
 {%highlight text linenos %}
 Projects/viewfiles git:(master) ▶ git push heroku
@@ -137,3 +148,6 @@ To git@heroku.com:viewfiles.git
    dae558e..35cd50f  master -> master
 {%endhighlight%}
 
+All in all, im pretty impressed so far with the performance on heroku, mind you i'm really not doing anything intensive and really have a lot more to learn with Nancy. 
+
+Hope this helps wayward travellers, attempting to accomplish similar!
