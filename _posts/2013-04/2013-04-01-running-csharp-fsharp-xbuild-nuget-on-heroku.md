@@ -8,8 +8,6 @@ tags: [fsharp, xamarinstudio, heroku, csharp, xbuild]
 
 Recently i decided to try and get [Nancy](http://nancyfx.org/) up and running on [Heroku](http://www.heroku.com/), heres a brief gist of things I did to get it up and working.
 
-
-
 ## The buildpack
 There are [a](https://github.com/bvanderveen/heroku-mono-buildpack) [few](https://github.com/brandur/heroku-buildpack-mono) [buildpacks](https://github.com/BenHall/heroku-buildpack-mono) for mono2.x around on the internet but I was aiming for mono3 this turned out to be the longest part.
 I ended up trying to use [vulcan](https://github.com/heroku/vulcan) to create a buildpack but kept hitting issues so ended up `heroku run bash`'ing and building mono3 and netcatting it over, its available [here](https://github.com/aktowns/mono3-buildpack). I ended up throwing [Nuget](http://nuget.org/) in there too.
@@ -29,8 +27,6 @@ When committing files to the repo, i used the following .gitignore to not push u
     projdir/obj
     packages/*
     *.userprefs
-
-
 
 ## Nancy
 [Nancy](http://nancyfx.org/) is a [Sinatra](http://www.sinatrarb.com/) inspired framework for building web applications. Getting nancy setup with F# was pretty straight forward, the only issue initially was finding the right host to bind to, until i discovered binding to localhost allows connections intended for any host *(from the HTTP Host: header)*. 
@@ -67,9 +63,6 @@ let main args =
 The procfile tells heroku how to launch your application, in the case of self-hosted nancy the following works fine with the buildpack above.
 
     web: mono appdir/bin/Debug/app.exe
-
-
-
 
 ## Compiling and deploying
 I had to enable build with xbuild in [xamarin studio](http://xamarin.com/studio)
