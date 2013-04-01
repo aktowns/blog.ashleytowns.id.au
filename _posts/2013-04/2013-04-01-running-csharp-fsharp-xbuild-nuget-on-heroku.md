@@ -3,7 +3,7 @@ layout: post
 title: "Running C#/F# on heroku"
 description: "Setting up Nancy in F# to run via xbuild with nuget on heroku"
 category: code
-tags: [fsharp, xamarinstudio, heroku, csharp, xbuild]
+tags: [fsharp, heroku, xbuild]
 ---
 
 Recently i decided to try and get [Nancy](http://nancyfx.org/) up and running on [Heroku](http://www.heroku.com/), heres a brief gist of things I did to get it up and working.
