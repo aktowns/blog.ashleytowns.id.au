@@ -19,7 +19,8 @@ To use the build pack, pass it in with `heroku create` on a project
 The buildpack looks for a solution file (.sln) in root directory, and if it detects any packages.config's it will run Nuget on them and attempt to install them to packages/ this syncs up with the way [monodevelop nuget addin](https://github.com/mrward/monodevelop-nuget-addin) stores downloaded packages.
 
 
-##### .gitignore
+**The .gitignore file**
+
 When committing files to the repo, i used the following .gitignore to not push up compiled binaries or packages as the buildpack should manage all of that.
 
     projdir/bin
@@ -57,12 +58,13 @@ let main args =
     0
 {% endhighlight %}
 
-##### The Procfile
+**The Procfile**
+
 The procfile tells heroku how to launch your application, in the case of self-hosted nancy the following works fine with the buildpack above.
 
     web: mono appdir/bin/Debug/app.exe
 
-### Compiling and deploying
+## Compiling and deploying
 I had to enable build with xbuild in [xamarin studio](http://xamarin.com/studio)
 
 ![xamarin studio](/images/Screen%20Shot%202013-04-01%20at%2010.30.26%20AM2.png) 
