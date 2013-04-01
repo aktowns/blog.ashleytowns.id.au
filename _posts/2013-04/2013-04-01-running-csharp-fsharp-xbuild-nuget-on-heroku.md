@@ -34,7 +34,7 @@ When committing files to the repo, i used the following .gitignore to not push u
 
 Make sure to include Nancy and Nancy.Hosting.Self using monodevelop-nuget-addin.
 
-{%highlight fsharp linenos %}
+{%highlight fsharp %}
 module viewfiles.Main
 
 open System
@@ -78,7 +78,7 @@ and re-order the fsproj build order, so `Program.fs` sits last (or your file wit
 
 This takes a while, as it needs to pull down the Mono environment from S3 (100mb), pull down Nuget and pull in Nugets dependencies im sure theres ways to speed this up with caching but have yet to try any of them out. 
 
-{%highlight text linenos %}
+{%highlight text %}
 Projects/viewfiles git:(master) ▶ git push heroku
 Counting objects: 5, done.
 Delta compression using up to 8 threads.
