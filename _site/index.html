@@ -1,62 +1,94 @@
 <!DOCTYPE html>
 <html lang="en-us">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width">
-		<title>Hello World!</title>
-		<link rel="stylesheet" href="/style.css" />
-		<link rel="stylesheet" href="/pygments.css" />
-		<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
-		<script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
-	</head>
-	<body>
-		<div id="container">
-			<header><inner><h1><a href="/">&laquo;</a>Hello World!</h1></inner></header>
-			<content><link href='homepage.css' rel='stylesheet' /><div id='contain'>
-<div class='head' id='face'>
-<div id='eye'>
-	<div id='l'>&nbsp;</div>
-	<div id='r'>&nbsp;</div>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Hello World!</title>
+    <link rel="stylesheet" href="/content/css/style.css" />
+    <link rel="stylesheet" href="/content/css/tooltip.css" />
+    <link rel="stylesheet" href="/content/css/tomorrow.css" />
+    <link rel="stylesheet" href="/content/css/app.css" />
+    <script type="text/javascript" src="/content/js/prettify.js"></script>
+    <script type="text/javascript" src="/content/js/tooltip.js"></script>
+    <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+    <script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
+  </head>
+  <body onload="prettyPrint()">
+    <div id="container">
+      <header><inner><h1><a style="padding-right: 50px;" href="/">&laquo;</a>Hello World!</h1></inner></header>
+      <content>
+
+<link rel="stylesheet" href="/content/css/homepage.css" />
+<div id="contain">
+  <div class="head face">
+    <div class="eye">
+      <div class="eye-left">&nbsp;</div>
+      <div class="eye-right">&nbsp;</div></div>
+    <div class="eye">
+      <div class="eye-left">&nbsp;</div>
+      <div class="eye-right">&nbsp;</div>
+    </div>
+    <div class="chin">
+      <div class="mouth">&nbsp;</div>
+    </div>
+  </div>
 </div>
-<div id='eye'>
-	<div id='l'>&nbsp;</div>
-	<div id='r'>&nbsp;</div>
-</div>
-<div id='chin'><div id='mouth'>&nbsp;</div></div>
-</div>
-</div><br /><h3>rant rant</h3><ul class='posts'>
-  
-	<li>
-		<span>01 Apr 2013</span> &raquo; <a href='/code/2013/04/01/running-csharp-fsharp-xbuild-nuget-on-heroku'>Running C#/F# on heroku</a>  <span class='tags'>| fsharp heroku xbuild  </span>
-		<br />
-		<span class='description'>/* Setting up Nancy in F# to run via xbuild with nuget on heroku */</span>
-	</li>
-  
-	<li>
-		<span>01 Nov 2012</span> &raquo; <a href='/code/2012/11/01/fsharp-qyoto-on-os-x'>FSharp, Qyoto on OS X</a>  <span class='tags'>| fsharp qt qyoto  </span>
-		<br />
-		<span class='description'>/* Setting up mono 3.0, fsharp and qyoto on OS X */</span>
-	</li>
-  
-	<li>
-		<span>31 Oct 2012</span> &raquo; <a href='/misc/2012/10/31/obligatory-test-post'>Boring test page</a>  <span class='tags'>|   </span>
-		<br />
-		<span class='description'>/* and you thought YOUR test page was boring.. */</span>
-	</li>
-  
-</ul></content>
-			<footer>
-				<inner>
-					Theme inspired by jekyll-bootstrap's "<a href="http://themes.jekyllbootstrap.com/preview/the-minimum/">the minimum</a>"
-					<br />
-					t:<a target="_blank" href="http://www.twitter.com/ikeeex">@ikeex</a>
-					g:<a target="_blank" href="http://www.github.com/aktowns">aktowns</a>
-					<br />
-					<br />
-				</inner>
-			</footer>
-		</div>
-		<script type="text/javascript">
+<br />
+<h3>rant rant</h3>
+<ul class="posts">
+  <li>
+    &raquo; <a href="/posts/2013-04/2013-04-06-tilde.html">Tilde, a static blog generator</a> 
+    <br />
+    <span class="date">6/04/2013</span>
+      <span class="tags">| fsharp, Blogging, FSharp.Formatting, Razor, .Net, tilde, meta </span> 
+    <br />
+    <span class="description">
+      A Jekyll like static blog generator using Razor and FSharp.Formatting
+    </span>
+  </li>
+  <li>
+    &raquo; <a href="/posts/2013-04/2013-04-01-running-csharp-fsharp-xbuild-nuget-on-heroku.html">Running .Net on heroku</a> 
+    <br />
+    <span class="date">1/04/2013</span>
+      <span class="tags">| fsharp, heroku, xbuild, nuget, .net </span> 
+    <br />
+    <span class="description">
+      Setting up Nancy on F# to run via xbuild
+    </span>
+  </li>
+  <li>
+    &raquo; <a href="/posts/2012-11/2012-11-01-fsharp-qyoto-on-os-x.html">FSharp, Qyoto on OS X</a> 
+    <br />
+    <span class="date">1/11/2012</span>
+      <span class="tags">| fsharp, qt, qyoto, .net, brew </span> 
+    <br />
+    <span class="description">
+      Setting up mono 3.0, fsharp and qyoto on OS X
+    </span>
+  </li>
+  <li>
+    &raquo; <a href="/posts/2012-10/2012-10-31-obligatory-test-post.html">Boring test page</a> 
+    <br />
+    <span class="date">31/10/2012</span>
+      <span class="tags">| misc </span> 
+    <br />
+    <span class="description">
+      and you thought YOUR test page was boring..
+    </span>
+  </li>
+</ul>
+
+</content>
+      <footer>
+        <inner>
+          t:<a target="_blank" href="http://www.twitter.com/ikeeex">@ikeeex</a>
+          g:<a target="_blank" href="http://www.github.com/aktowns">aktowns</a>
+          <br />
+          <br />
+        </inner>
+      </footer>
+    </div>
+    <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-36036802-1']);
   _gaq.push(['_setDomainName', 'ashleytowns.id.au']);
@@ -68,5 +100,6 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 </script>
-	</body>
+
+  </body>
 </html>
