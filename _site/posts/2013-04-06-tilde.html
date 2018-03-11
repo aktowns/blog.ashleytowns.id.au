@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Tilde, a static blog generator</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/tooltip.css" />
+    <link rel="stylesheet" href="../css/tomorrow.css" />
+    <link rel="stylesheet" href="../css/app.css" />
+    <link rel="stylesheet" href="../css/pandoc.css" />
+    <script type="text/javascript" src="../js/prettify.js"></script>
+    <script type="text/javascript" src="../js/tooltip.js"></script>
+  </head>
+  <body onload="prettyPrint()">
+    <div id="container">
+      <header><inner><h1><a style="padding-right: 50px;" href="../">&laquo;</a>Tilde, a static blog generator</h1></inner></header>
+      <content><article>
+    <section class="header">
+        Posted on April  6, 2013
+        
+    </section>
+    <section>
+        <p><img src="../content/images/tilde4.png" alt="tilde" /> ## Huh?</p>
+<p>Tilde uses <a href="https://github.com/Antaris/RazorEngine">Razor</a> for templating, <a href="https://github.com/tpetricek/FSharp.Formatting">FSharp.Formatting</a> for <a href="http://daringfireball.net/projects/markdown/">Markdown</a> and F# highlighting and <a href="https://code.google.com/p/google-code-prettify/">Prettify</a> for highlighting other languages. The directory layout is quite similar to <a href="http://jekyllrb.com/">Jekyll</a> check out my <em>(quite hacked together!)</em> blog source <a href="https://github.com/aktowns/blog.ashleytowns.id.au">here</a>.</p>
+<p>Posts are written in Markdown and are post-processed as Razor templates. Heres an example of the top of this page</p>
+<pre><code>[lang=markdown]
+@@{
+  Layout = &quot;Post&quot;;
+  Title = &quot;Tilde, a static blog generator&quot;;
+  Description = &quot;A Static blog generator using Razor and FSharp.Formatting&quot;;
+  Tags = new string[] {&quot;F#&quot;, &quot;Blogging&quot;, &quot;FSharp.Formatting&quot;, &quot;Razor&quot;};
+  Meta[&quot;CustomEntry&quot;] = &quot;Woo&quot;;
+}
+
+![tilde](/content/images/tilde2.png)
+## Huh?
+
+Tilde uses [Razor](https://github.com/Antaris/RazorEngine) for templating, [FSharp.Formatting](https://github.com/tpetricek/FSharp.Formatting)</code></pre>
+<p>All the usual Markdown syntax should work, aswell as anything supported by <a href="https://github.com/Antaris/RazorEngine">RazorEngine</a> for example typing <code>@@DateTime.Now</code> would produce <code>@DateTime.Now</code> this allows for some pretty awesome compile time hackery for example the following chunk of code written anywhere in the blog post:</p>
+<pre><code>[lang=csharp]
+@@{
+  var client = new System.Net.WebClient();
+  var tracks = client.DownloadString(&quot;http://ws.audioscrobbler.com/1.0/user/ike_x/recenttracks.rss&quot;);
+  var rgx = new System.Text.RegularExpressions.Regex(&quot;&lt;title&gt;(.*?)&lt;/title&gt;&quot;);
+  @@rgx.Matches(tracks)[1].Groups[1];
+}</code></pre>
+@{ var client = new System.Net.WebClient(); var tracks = client.DownloadString(“http://ws.audioscrobbler.com/1.0/user/ike_x/recenttracks.rss”); var rgx = new System.Text.RegularExpressions.Regex(“
+<title>
+(.*?)
+</title>
+<p>“); <span class="citation" data-cites="rgx.Matches">@rgx.Matches</span>(tracks)[1].Groups[1]; }</p>
+<p>Should print out the last song I was listening to when this blog was last compiled. (Hopefully above!).</p>
+<p>Unfortunately at the moment the markdown will be interpreted inside <code>@@{ }</code> so anything that would be interpreted as markdown will corrupt the code. Also since this evaluated every re-compile of the site depending on what you have this could increase page compile times rapidly.</p>
+<h2 id="fsharp.formatting-and-syntax-highlighting">FSharp.Formatting and Syntax highlighting</h2>
+<p>FSharp.Formatting, allows us to export F# snippets with syntax highlighting and tooltips, try <strong>hovering your mouse over the code below</strong>.</p>
+<pre><code>[name=example.fsx]
+/// Fibonacci Number formula
+let rec fib n =
+    match n with
+    | 0 | 1 -&gt; n
+    | _ -&gt; fib (n - 1) + fib (n - 2)
+ 
+/// Another approach - a lazy infinite sequence of Fibonacci numbers
+let fibSeq = Seq.unfold (fun (a,b) -&gt; Some(a+b, (b, a+b))) (0,1)
+ 
+// Print even fibs
+[1 .. 10]
+|&gt; List.map     fib
+|&gt; List.filter  (fun n -&gt; (n % 2) = 0)
+|&gt; printList
+ 
+// Same thing, using a list expression
+[ for i in 1..10 do
+    let r = fib i
+    if r % 2 = 0 then yield r ]
+|&gt; printList
+// taken from: http://en.wikipedia.org/wiki/F_Sharp_(programming_language)#Examples</code></pre>
+<p>F# Blocks begin with the normal markdown 4+ spaces in then a name field followed by the code, for example the code above.</p>
+<pre><code>[lang=html]
+[linenums=false]
+ [name=example.fsx]
+/// Fibonacci Number formula
+let rec fib n =
+    match n with
+    | 0 | 1 -&gt; n
+    | _ -&gt; fib (n - 1) + fib (n - 2)
+ </code></pre>
+<p>Unfortunately :( there is no tooltips for other languages.</p>
+<pre><code>[lang=ruby]
+require &quot;sinatra&quot;
+
+class Example &lt; Sinatra::Base
+  get &quot;/&quot; do  
+    &quot;Why hello there!&quot;
+  end
+end</code></pre>
+<p>Which was created with the following</p>
+<pre><code>[lang=html]
+[linenums=false]
+ [lang=ruby]
+require &quot;sinatra&quot;
+
+class Example &lt; Sinatra::Base
+  get &quot;/&quot; do  
+    &quot;Why hello there!&quot;
+  end
+end</code></pre>
+<h2 id="site-posts-templating-partials">Site, Posts, Templating, Partials</h2>
+<p>Tilde uses templates from the _layouts folder, for example my blog has <a href="https://github.com/aktowns/blog.ashleytowns.id.au/blob/master/_layouts/Post.cshtml">Post.cshtml</a> which references <a href="https://github.com/aktowns/blog.ashleytowns.id.au/blob/master/_layouts/Default.cshtml">Default.cshtml</a> and includes <a href="https://github.com/aktowns/blog.ashleytowns.id.au/blob/master/_includes/GA.cshtml">GA.cshtml</a> as a partial so the render chain looks something like this:</p>
+<pre><code>[lang=none]
+[linenums=false]
+[Markdown Post] -&gt; (Post.cshtml -&gt; GA.cshtml) -&gt; Default.cshtml</code></pre>
+<p>Templates follow the same general Razor rules, and contain a <code>@@RenderBody</code> to fill out the contents. @<span class="citation" data-cites="RenderPart">@RenderPart</span> is used to render partials, for my blog I have disqus and google analytics being included this way.</p>
+<p>Variables are scoped <strong>per file</strong> for example a variable defined here cannot be seen by the template i specified at the top. <strong>Except for</strong> the <a href="http://affirmaconsulting.wordpress.com/2011/02/02/asp-net-mvc-dont-fear-the-viewbag/">ViewBag</a> and the following <code>Title</code>, <code>Description</code>, <code>Tags</code>, <code>Meta</code> which are available from the template and from other pages under <code>Site.Posts</code>.</p>
+<p><code>Meta</code> is a dictionary which can include any custom variables you want the template to be able to access.</p>
+<p><code>Site</code> is available to templates and at the moment contains just <code>Posts</code> which is an array of all the rendered blog posts and the properties above. <code>Site</code> can be accessed from blog posts but depending on the current compile order can be unpredictable. An example of a page using this is <a href="https://github.com/aktowns/blog.ashleytowns.id.au/blob/master/index.cshtml">index.cshtml</a> from this blog.</p>
+<p>Theres probably a lot more to write, but my head is killing me. This was hacked together over a friday night i’d imagine its filled with bugs and other nice things. Its available <a href="https://github.com/aktowns/tilde">here at github</a>. I’m using it to generate this blog!</p>
+    </section>
+</article>
+</content>
+      <center>      
+        <nav>
+          <a href="../">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../archive.html">Archive</a>
+        </nav>
+      </center>
+      <footer>
+        <inner>
+          t:<a target="_blank" href="http://www.twitter.com/ikeeex">@ikeeex</a>
+          g:<a target="_blank" href="http://www.github.com/aktowns">aktowns</a>
+          <br />
+          <br />
+          Site proudly generated by
+          <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </inner>
+      </footer>
+    </div>
+    

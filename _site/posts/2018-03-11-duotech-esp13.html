@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>The Duotech ESP-13 wifi shield</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/tooltip.css" />
+    <link rel="stylesheet" href="../css/tomorrow.css" />
+    <link rel="stylesheet" href="../css/app.css" />
+    <link rel="stylesheet" href="../css/pandoc.css" />
+    <script type="text/javascript" src="../js/prettify.js"></script>
+    <script type="text/javascript" src="../js/tooltip.js"></script>
+  </head>
+  <body onload="prettyPrint()">
+    <div id="container">
+      <header><inner><h1><a style="padding-right: 50px;" href="../">&laquo;</a>The Duotech ESP-13 wifi shield</h1></inner></header>
+      <content><article>
+    <section class="header">
+        Posted on March 11, 2018
+        
+    </section>
+    <section>
+        <p>I recently picked up a <a href="https://www.jaycar.com.au/arduino-compatible-esp-13-wifi-shield/p/XC4614">Arduino Compatible ESP-13 Wifi Shield</a> from Jaycar and had a bit of fun setting it up.</p>
+<p><img src="../images/esp13.jpg" /></p>
+<p>You communicate with the device over serial (and by default using the only hardware serial port on the arduino), by sending it AT commands, you can talk to it directly via an Arduino Uno by wiring up the pin <code>D0</code> to <code>RXD</code>, <code>D1</code> to <code>TXD</code> and <code>GND</code> and <code>3.3v</code> on the arduino to the <code>3.3v</code> and <code>GND</code> on the shield (under uart). Once wired up flash the arduino with a blank sketch and can talk to the shield using picocom with something like</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="ex">picocom</span> -b 115200 --omap crcrlf /dev/ttyACM1</a></code></pre></div>
+<p>Jaycar has a list of <a href="https://www.jaycar.com.au/medias/sys_master/images/9065448931358/XC4614-manualMain.pdf">some of the commands used</a>.</p>
+<h2 id="updating-the-firmware">Updating the firmware</h2>
+<p>After connecting I ran <code>AT+GMR</code> which dumps the version information for the ESP8226 chip, which gave me the following</p>
+<pre><code>AT version:0.40.0.0(Aug  8 2015 14:45:58)
+SDK version:1.3.0
+Ai-Thinker Technology Co.,Ltd.
+Build:1.3.0.2 Sep 11 2015 11:48:04</code></pre>
+<p>The firmware that came on the shield is by a company called <a href="http://en.ai-thinker.com/esp8266">AiThinker</a> unfortunately their website seems to be all in chinese, having a look at their <a href="http://en.ai-thinker.com/esp8266/sdk&amp;xid=17259,15700023,15700105,15700124,15700149,15700168,15700173,15700201&amp;usg=ALkJrhjb_q5IrleFZ3LAnZhgKO1FQyc28g">firmware page</a> it looked like there was a new version available, and something called AiCloud which seems to be some sort of IoT solution. Since im just interested in the AT version, I looked into flashing with a newer firmware their AT version is <a href="http://en.ai-thinker.com/_media/esp8266/ai-thinker_esp8266_at_firmware_dout_v1.5.4.1-a_20171130.rar">linked here</a>.</p>
+<p>Looking into what they’ve actually changed vs the normal firmware from <a href="https://www.espressif.com/en/products/hardware/esp8266ex/overview">espressif</a> it seems they’ve added a few commands to deal with the GPIO pins (which it looks like the latest stock firmware has anyway), so instead I wanted to flash the latest stock firmware <a href="https://github.com/espressif/ESP8266_NONOS_SDK/releases">currently 2.2.0</a>.</p>
+<p><img src="../images/esp13=downloadfirmware_hardware.png" /></p>
+<p>Reading through the documentation on the AIThinker site, the first step was to set the the chip into UART Download Mode.</p>
+<p><img src="../images/IMG_20180311_1952102.jpg" /></p>
+<p>This is accomplished by setting <code>EN</code> high (connect to one of the unused the 3.3v pins below it), <code>GPIO15</code> to low <code>GPIO2</code> to high and <code>GPIO0</code> to low. After thats done hit reset and upon connecting should be greeted with:</p>
+<pre><code> ets Jan  8 2013,rst cause:2, boot mode:(1,7)</code></pre>
+<p>Now it was ready to flash the latest firmware! Since the shield has 32Mbit Flash size and I wanted to flash the boot version of the rom (which allows OTA updating the firmware) for that I needed a tool to flash the firmware and as luck would have it Arch has <code>esptool</code> in the community repo</p>
+<pre><code>Repository      : community
+Name            : esptool
+Version         : 2.2-1
+Description     : A cute Python utility to communicate with the ROM bootloader in Espressif ESP8266</code></pre>
+<p>Following the docs in the latest espressif SDK (under the bin folder) and the esptool github I ran the following</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1">$ <span class="ex">esptool</span> --port /dev/ttyACM0 write_flash <span class="dt">\ </span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">          <span class="ex">0x0000</span> ./bin/boot_v1.7.bin <span class="dt">\ </span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">          <span class="ex">0x1000</span> ./bin/at/512+512/user1.1024.new.2.bin <span class="dt">\ </span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">          <span class="ex">0x3fc000</span> ./bin/esp_init_data_default_v08.bin <span class="dt">\ </span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">          <span class="ex">0x7e000</span> ./bin/blank.bin <span class="dt">\ </span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">          <span class="ex">0x3fe000</span> ./bin/blank.bin</a></code></pre></div>
+<p>which spat out</p>
+<pre><code>esptool.py v2.2
+Connecting......
+Detecting chip type... ESP8266
+Chip is ESP8266EX
+Uploading stub...
+Running stub...
+Stub running...
+Configuring flash size...
+Auto-detected Flash size: 4MB
+... 
+Wrote 4096 bytes (26 compressed) at 0x003fe000 in 0.0 seconds (effective 3905.8 kbit/s)...
+Hash of data verified.
+
+Leaving...
+Hard resetting...</code></pre>
+<p>Great success! I removed the jumpers from the shield and hit the reset button.</p>
+<p><img src="../images/Screenshot%20from%202018-03-11%2020-18-50.png" /></p>
+<h2 id="getting-serial0-back">Getting Serial0 back!</h2>
+<p>So one annoying thing was that the shield by default uses <code>D0</code>+<code>D1</code> the Arduino Uno hardware serial pins by default, this means that you can’t use Serial for anything but the wifi shield when its enabled (its toggled by the two dip switches on the board). It also means you need to flick the toggles when you want to flash the sketch.</p>
+<p>Luckily there’s a way around this! The Arduino has a <a href="https://www.arduino.cc/en/Reference/SoftwareSerial">Software Serial</a> library which allows us to emulate the UART chip on other pins, with one unfortunate downside, we can only do it at 9600 baud (as far as I can tell). For my usecase this fine, but before we do that we need to tell the shield to also speak 9600 baud.</p>
+<p>Looking at the <a href="https://www.espressif.com/en/products/hardware/esp8266ex/resources">AT command reference here</a> specifically the section titled <code>AT+UART_DEF—Default UART Configuration; Saved in the Flash</code> it looks like we can set and save the baud rate by issuing:</p>
+<pre><code>AT+UART_DEF=9600,8,1,0,0</code></pre>
+<p>Once this is set we can wire up the esp UART RXD/TXD pins to some free digital pins on the Arduino side (pins on top the shield). Then given something like the following</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><a class="sourceLine" id="cb8-1" data-line-number="1">SoftwareSerial wifi(PIN_1, PIN_2);</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="dt">void</span> setup() {</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">    wifi.begin(<span class="dv">9600</span>);</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">    wifi.println(<span class="st">&quot;AT&quot;</span>);</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">}</a></code></pre></div>
+<p>We have our serial back and also the ability to talk to the shield!</p>
+    </section>
+</article>
+</content>
+      <center>      
+        <nav>
+          <a href="../">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../archive.html">Archive</a>
+        </nav>
+      </center>
+      <footer>
+        <inner>
+          t:<a target="_blank" href="http://www.twitter.com/ikeeex">@ikeeex</a>
+          g:<a target="_blank" href="http://www.github.com/aktowns">aktowns</a>
+          <br />
+          <br />
+          Site proudly generated by
+          <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </inner>
+      </footer>
+    </div>
+    
