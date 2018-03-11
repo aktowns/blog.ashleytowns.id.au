@@ -5,3 +5,9 @@ ol.linenums {
 pre {
   white-space: pre-wrap;
 }
+
+code, pre, .sourceCode {
+  font-family: "Inconsolata", 'Courier New', Courier, monospace;
+  background-color: #fafafa;
+  padding: 1px;
+}

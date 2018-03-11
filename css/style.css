@@ -1,7 +1,7 @@
 body {
 	margin: 0;
 	font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, "MS PGothic", Osaka, Sans-Serif;
-	font-size: 1.5em;
+	font-size: 1.3em;
 	color: #2D2D2D;
 }
 
@@ -34,7 +34,7 @@ header inner, footer inner {
 
 content {
 	margin: 0 auto;
-	width: 720px;
+	width: 800px;
 	display: block;
 }
 
@@ -63,7 +63,7 @@ a {
 	padding-left: 3px;
 	padding-right: 3px;
 }
-a.sourceLine { background-color: white; }
+a.sourceLine { background-color: #fafafa; }
 a:hover {
 	background-color: orange;
 }
