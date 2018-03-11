@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>FSharp, Qyoto on OS X</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/tooltip.css" />
+    <link rel="stylesheet" href="../css/tomorrow.css" />
+    <link rel="stylesheet" href="../css/app.css" />
+    <link rel="stylesheet" href="../css/pandoc.css" />
+    <script type="text/javascript" src="../js/prettify.js"></script>
+    <script type="text/javascript" src="../js/tooltip.js"></script>
+  </head>
+  <body onload="prettyPrint()">
+    <div id="container">
+      <header><inner><h1><a style="padding-right: 50px;" href="../">&laquo;</a>FSharp, Qyoto on OS X</h1></inner></header>
+      <content><article>
+    <section class="header">
+        Posted on November  1, 2012
+        
+    </section>
+    <section>
+        <p>After playing around with <a href="http://www.mono-project.com/MonoMac">MonoMac</a> I realized most people I know are running windows, most of the time thats fine. But sometimes I’d like to show something off and <a href="http://techbase.kde.org/Development/Languages/Qyoto">Qyoto</a> seems like it could be the perfect cross platform solution!</p>
+<p><strong>Warning</strong>, before I go on. I’m quite new to F# and Qt so if theres any errors give me a yell below</p>
+<p>I got a bit stuck going through the whole process of setting everything up, so here’s what I did for anyone else looking to play with it.</p>
+<h3 id="compiling-mono">Compiling Mono</h3>
+<p>The mono packages for OS X are 32bit, where as the Qt libraries from homebrew are 64bit. So based on <a href="https://github.com/adamv/homebrew-alt">adamv’s homebrew alt repo</a> I made a mono3 recipe at <a href="https://github.com/aktowns/tappedbrews">aktowns/tappedbrews</a> to install simply tap it and brew install.</p>
+<pre><code>[linenums=false]
+brew tap aktowns/tappedbrews
+brew install aktowns/tappedbrews/mono3</code></pre>
+<p>This will install <a href="http://tirania.org/blog/archive/2012/Oct-22.html">mono 3.0.0</a> and <a href="https://github.com/fsharp/fsharp/tree/3.0.11">FSharp 3.0.11</a> 64bit, next we need Qt and Qyoto</p>
+<h3 id="getting-qt-and-compiling-qyoto">Getting Qt and compiling Qyoto</h3>
+<p>If anyone knows how to imply –HEAD using <code>depends_on</code> in a recipe please tell me!<br />
+These homebrew recipes are mostly based off the instructions <a href="http://vivekgani.com/blog/2012/09/17/setting-up-qyoto-on-osx-lion/">here</a> with a few minor changes.</p>
+<pre><code>[linenums=false]
+brew install qt
+brew install aktowns/tappedbrews/smokegen --HEAD
+brew install aktowns/tappedbrews/smokeqt --HEAD
+brew install aktowns/tappedbrews/qyoto --HEAD</code></pre>
+<h3 id="installing-monodevelop">Installing monodevelop</h3>
+<p>Instead of compiling monodevelop, gtk# and numerous other dependencies its probably a lot easier to just grab the <a href="http://download.xamarin.com/monodevelop/Mac/MonoDevelop-3.0.4.7.dmg">monodevelop binaries</a>, install them and install <a href="http://download.mono-project.com/archive/2.10.9/macos-10-x86/11/MonoFramework-MRE-2.10.9_11.macos10.xamarin.x86.dmg">mono 2.10.9</a> (to run monodevelop in) and select your default runtime as our brew compiled mono.</p>
+<figure>
+<img src="../content/images/monodevelop.png" alt="monodevelop" /><figcaption>monodevelop</figcaption>
+</figure>
+<p>I noticed a bug with monodevelop (at least on 3.0.4.7) where if you have the binary 3.0.0 and your brew compiled 3.0.0 monodevelop wont let you set the default (it keeps defaulting to the binary 3.0.0) so for now 2.10.9 is fine.</p>
+<p>Now lets create a new F# console project!</p>
+<h3 id="an-example-f-qyoto-application">An example F# Qyoto Application</h3>
+<p>Adapted from <a href="http://zetcode.com/gui/csharpqyoto/introduction/">zetcode’s c# qyoto introduction</a></p>
+<pre><code>[name=qyoto.fsx]
+module Program
+
+open System
+open Qyoto
+
+let SIGNAL = QWidget.SIGNAL
+let SLOT = QWidget.SLOT
+
+type QyotoApp() as self = class
+  inherit QWidget()
+  
+  do
+    base.WindowTitle &lt;- &quot;Hello World!&quot;
+    base.ToolTip &lt;- &quot;Goodbye World&quot;
+    
+    self.setupButton
+    self.resizeAndCenter 250 150
+    
+    base.Show()
+  
+  member self.resizeAndCenter w h =
+    let qdw = new QDesktopWidget()
+    let x = (qdw.Width - w) / 2
+    let y = (qdw.Height - h) / 2
+    base.Resize(w, h)
+    base.Move(x, y)
+    
+  member self.setupButton : unit =
+    let quit = new QPushButton(&quot;Quit&quot;, self)    
+    self.Connect(quit, SIGNAL(&quot;clicked()&quot;), SLOT(&quot;quit()&quot;)) |&gt; ignore
+    quit.SetGeometry(50, 40, 80, 30)
+  
+  // MARK: Slots
+  [&lt;Q_SLOT(&quot;quit()&quot;)&gt;]
+  member self.quit() : unit = Environment.Exit(0)
+end
+
+let main(args) : unit =    
+    let application = new QApplication(args)
+    let qyotoApp = new QyotoApp()
+    
+    QApplication.Exec() |&gt; ignore
+
+main(Environment.GetCommandLineArgs())</code></pre>
+<figure>
+<img src="../content/images/helloworld.png" alt="hello world" /><figcaption>hello world</figcaption>
+</figure>
+    </section>
+</article>
+</content>
+      <center>      
+        <nav>
+          <a href="../">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../archive.html">Archive</a>
+        </nav>
+      </center>
+      <footer>
+        <inner>
+          t:<a target="_blank" href="http://www.twitter.com/ikeeex">@ikeeex</a>
+          g:<a target="_blank" href="http://www.github.com/aktowns">aktowns</a>
+          <br />
+          <br />
+          Site proudly generated by
+          <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </inner>
+      </footer>
+    </div>
+    

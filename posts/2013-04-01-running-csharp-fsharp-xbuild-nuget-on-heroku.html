@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Running .Net on heroku</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/tooltip.css" />
+    <link rel="stylesheet" href="../css/tomorrow.css" />
+    <link rel="stylesheet" href="../css/app.css" />
+    <link rel="stylesheet" href="../css/pandoc.css" />
+    <script type="text/javascript" src="../js/prettify.js"></script>
+    <script type="text/javascript" src="../js/tooltip.js"></script>
+  </head>
+  <body onload="prettyPrint()">
+    <div id="container">
+      <header><inner><h1><a style="padding-right: 50px;" href="../">&laquo;</a>Running .Net on heroku</h1></inner></header>
+      <content><article>
+    <section class="header">
+        Posted on April  1, 2013
+        
+    </section>
+    <section>
+        <p>Recently I decided to try and get <a href="http://nancyfx.org/">Nancy</a> up and running on <a href="http://www.heroku.com/">Heroku</a>, heres a brief gist of things I did to get it up and working.</p>
+<h2 id="the-buildpack">The buildpack</h2>
+<p>There are <a href="https://github.com/bvanderveen/heroku-mono-buildpack">a</a> <a href="https://github.com/brandur/heroku-buildpack-mono">few</a> <a href="https://github.com/BenHall/heroku-buildpack-mono">buildpacks</a> for mono2.x around on the internet but I was aiming for Mono 3 this turned out to be the longest part of the whole process.</p>
+<p>I tried to use <a href="https://github.com/heroku/vulcan">vulcan</a> to create a buildpack but kept hitting issues so ended up <code>heroku run bash</code>’ing, building Mono 3 and netcat’ing it over, its available <a href="https://github.com/aktowns/mono3-buildpack">here</a>. I ended up throwing <a href="http://nuget.org/">Nuget</a> in there too. Heroku have some pretty good documentation on the process <a href="https://devcenter.heroku.com/articles/buildpack-api">here</a>. My compile script is pretty hacked together but seems to be holding up fine.</p>
+<p>To use the build pack, pass it in with <code>heroku create</code> on a project</p>
+<pre><code>[linenums=false]
+heroku create projname --buildpack https://github.com/aktowns/mono3-buildpack.git</code></pre>
+<p>The buildpack looks for a solution file (.sln) in the root directory, and if it detects a packages.config it will run Nuget and attempt to install the packages to packages/ this syncs up with the way <a href="https://github.com/mrward/monodevelop-nuget-addin">monodevelop nuget addin</a> stores downloaded packages.</p>
+<p><strong>The .gitignore file</strong></p>
+<p>When committing files to the repo, I used the following .gitignore to not push up compiled binaries or packages as the buildpack should manage all of that.</p>
+<pre><code>[linenums=false]
+projdir/bin
+projdir/obj
+packages/*
+*.userprefs</code></pre>
+<h2 id="nancy">Nancy</h2>
+<p><a href="http://nancyfx.org/">Nancy</a> is a <a href="http://www.sinatrarb.com/">Sinatra</a> inspired framework for building web applications. Getting nancy setup with F# was pretty straight forward, the only issue initially was finding the right host to bind to, until i discovered binding to localhost allows connections intended for any host <em>(from the HTTP Host: header)</em>.</p>
+<p>Make sure to include Nancy and Nancy.Hosting.Self using monodevelop-nuget-addin.</p>
+<pre><code>[name=viewfiles.fsx]
+module viewfiles.Main
+
+open System
+open Nancy.Hosting
+
+type DemoApp () =
+    inherit NancyModule()
+    do
+        let Get = base.Get
+        Get.[&quot;/&quot;] &lt;- fun parameters -&gt; &quot;Hello from F#/Nancy on Heroku!&quot; :&gt; obj
+
+[&lt;EntryPoint&gt;]
+let main args = 
+    let env_port = Environment.GetEnvironmentVariable(&quot;PORT&quot;)
+    let port = if env_port = null then &quot;1234&quot; else env_port
+    
+    let nancy_host = new Nancy.Hosting.Self.NancyHost(new Uri(&quot;http://localhost:&quot; + port))
+    nancy_host.Start()
+    while true do Console.ReadLine() |&gt; ignore
+    0</code></pre>
+<p><strong>The Procfile</strong></p>
+<p>The procfile tells heroku how to launch your application, in the case of self-hosted nancy the following works fine with the buildpack above.</p>
+<pre><code>[linenums=false]
+web: mono appdir/bin/Debug/app.exe</code></pre>
+<h2 id="compiling-and-deploying">Compiling and deploying</h2>
+<p>I had to enable build with xbuild in <a href="http://xamarin.com/studio">xamarin studio</a></p>
+<figure>
+<img src="../content/images/Screen%20Shot%202013-04-01%20at%2010.30.26%20AM2.png" alt="xamarin studio" /><figcaption>xamarin studio</figcaption>
+</figure>
+<p>and edit the .fsproj to re-order the build order, so <code>Program.fs</code> sits last (or your file with the entrypoint)</p>
+<figure>
+<img src="../content/images/Screen%20Shot%202013-04-01%20at%2010.40.25%20AM2.png" alt="re-order" /><figcaption>re-order</figcaption>
+</figure>
+<p><code>git commit</code> your changes and push to heroku <code>git push heroku</code></p>
+<p>This takes a while, as it needs to pull down the Mono environment from S3 (100mb), pull down Nuget and pull in Nugets dependencies im sure theres ways to speed this up with caching but have yet to try any of them out.</p>
+<pre><code>[linenums=false]
+[lang=text]
+Projects/viewfiles git:(master) ▶ git push heroku
+Counting objects: 5, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 316 bytes, done.
+Total 3 (delta 1), reused 0 (delta 0)
+
+-----&gt; Fetching custom git buildpack... done
+-----&gt; MonoFramework app detected
+-----&gt; Copying mono to /tmp/build_1rpsx5dkzhkhv/vendor/
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  103M  100  103M    0     0  1746k      0  0:01:00  0:01:00 --:--:-- 2273k
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  235k  100  235k    0     0   262k      0 --:--:-- --:--:-- --:--:--  262k
+-----&gt; Setting envvars
+-----&gt; Importing trusted root certificates
+Mozilla Roots Importer - version 3.0.7.0
+Download and import trusted root certificates from Mozilla's MXR.
+Copyright 2002, 2003 Motus Technologies. Copyright 2004-2008 Novell. BSD licensed.
+
+Downloading from 'http://mxr.mozilla.org/seamonkey/source/security/nss/lib/ckfw/builtins/certdata.txt?raw=1'...
+Importing certificates into user store...
+140 new root certificates were added to your trust store.
+Import process completed.
+
+-----&gt; Setting up nuget
+Checking for updates from https://nuget.org/api/v2/.
+Currently running NuGet.exe 2.2.1.
+NuGet.exe is up to date.
+-----&gt; Installing dependencies with nuget
+Successfully installed 'Nancy.Serialization.JsonNet 0.16.1'.
+Successfully installed 'Nancy.Hosting.Self 0.16.1'.
+Successfully installed 'Nancy.Authentication.Forms 0.16.1'.
+Successfully installed 'Nancy.Viewengines.Razor 0.16.3'.
+Successfully installed 'Nancy 0.16.1'.
+Successfully installed 'System.Web.Razor.Unofficial 2.0.2'.
+Successfully installed 'Newtonsoft.Json 4.5.11'.
+-----&gt; Compiling application
+XBuild Engine Version 3.0.7.0
+Mono, Version 3.0.7.0
+Copyright (C) Marek Sieradzki 2005-2008, Novell 2008-2011.
+
+Build started 03/31/2013 21:53:10.
+__________________________________________________
+Project &quot;/tmp/build_1rpsx5dkzhkhv/viewfiles.sln&quot; (default target(s)):
+  Target ValidateSolutionConfiguration:
+    Building solution configuration &quot;Debug|x86&quot;.
+  Target Build:
+    Project &quot;/tmp/build_1rpsx5dkzhkhv/viewfiles/viewfiles.fsproj&quot; (default target(s)):
+      Target PrepareForBuild:
+    ... SNIP ...
+    Done building project &quot;/tmp/build_1rpsx5dkzhkhv/viewfiles/viewfiles.fsproj&quot;.
+Done building project &quot;/tmp/build_1rpsx5dkzhkhv/viewfiles.sln&quot;.
+
+Build succeeded.
+   0 Warning(s)
+   0 Error(s)
+
+Time Elapsed 00:00:04.1524600
+-----&gt; Discovering process types
+       Procfile declares types -&gt; web
+
+-----&gt; Compiled slug size: 110.5MB
+-----&gt; Launching... done, v25
+       http://viewfiles.herokuapp.com deployed to Heroku
+
+To git@heroku.com:viewfiles.git
+   dae558e..35cd50f  master -&gt; master</code></pre>
+<p>All in all, im pretty impressed so far with the performance on heroku, mind you i’m really not doing anything intensive and really have a lot more to learn with Nancy.</p>
+<p>Hope this helps wayward travellers, attempting to accomplish similar!</p>
+    </section>
+</article>
+</content>
+      <center>      
+        <nav>
+          <a href="../">Home</a>
+          <a href="../about.html">About</a>
+          <a href="../contact.html">Contact</a>
+          <a href="../archive.html">Archive</a>
+        </nav>
+      </center>
+      <footer>
+        <inner>
+          t:<a target="_blank" href="http://www.twitter.com/ikeeex">@ikeeex</a>
+          g:<a target="_blank" href="http://www.github.com/aktowns">aktowns</a>
+          <br />
+          <br />
+          Site proudly generated by
+          <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </inner>
+      </footer>
+    </div>
+    
